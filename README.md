@@ -48,8 +48,8 @@ Newton-Raphson method: $\(X_{n+1} = X_n - \frac{{f(X_n)}}{{f'(X_n)}}\)$, iterati
 
 Application in finance: $\(X_{n+1} = X_n - \frac{{BS(old vol) - C_m}}{{\text{vega}}}\)$.
 
-Objective: Minimize $\(f(x)$ to match market price.
+Objective: Minimize $\f(x)$ to match market price.
 
-Iterative improvement: Replace old info with new info and minimize $\(f(x)\)$ through break conditions.
+Iterative improvement: iteratively replace ${BS(old vol)}$ with new volitilty or $(X_{n+1}$
 
 
