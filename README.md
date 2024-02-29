@@ -24,7 +24,7 @@ Under  the assumption that a respective investor assigns equal weightings to all
 * Individual 5 year $Sharpe-ratio$ and Annualized $Sharpe-ratio$ (a metric used to show relative risk to reward) $$\[\text{Sharpe Ratio} = \frac{R_i - R_f}{\sigma_i}\]$$
 * Individual 5 year $Beta$ or $\( \beta \)$ for each holding (A holdings risk relative to the market that possesses a $\( \beta \)=1$)
 
-* Cummulative weighted performance returns
+* Cummulative weighted performance returns (Log Normal Returns as an adjustment for typically very right skewed financial data as we have high concentrations of small postive returns and a few high positve returns, by taking teh natural log our distribution becomes more symetrical as we condense high returns and expand small returns
 * Chart depiciton of portfolio returns over time
 * cummulative beta
 
@@ -52,4 +52,20 @@ Objective: Minimize $f(x)$ to match market price.
 
 Iterative improvement: iteratively replace ${BS(old vol)}$ with new volitilty or $X_{n+1}$
 
+<p align="left">
+  <b>Advanced: </b>
+</p>
+
+* Predictive time series
+
+We shall be using $RNN$, more specifically, $LSTM$ to do a 30 day predictive portfolio. RNNs are great for sequential dependencies. Hence new data points depend very heavily on previous data points. As a result, a predictive time series utilizing RNNs would be incredibly appropriate for financial data. Oftentimes markets are very short-term reactionary, meaning that when there is a couple day bullish or bearish momentum the psychological aspect of the market will usually dictate that the next day pricing is impacted by this occurrence. However, the gradient on RNN models can become exponentially large and small very quickly and frankly in “blow up”. LSTM is a subset of RNN that can avoid this gradient issue.
+
+<p align="center">
+  <b>It is a common known fact that using predictve time series for financial markets is not advisable as markets are incredibly complex. None the less, lets give it a try...</b>
+</p>
+
+* Suggested SMA strategy (Standard Moving Average)
+* Suggested EMA startegy (Exponential Moving Average)
+
+## GUIs and Libraries &#x1F4F6;
 
