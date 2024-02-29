@@ -67,5 +67,21 @@ We shall be using $RNN$, more specifically, $LSTM$ to do a 30 day predictive por
 * Suggested SMA strategy (Standard Moving Average)
 * Suggested EMA startegy (Exponential Moving Average)
 
-## GUIs and Libraries &#x1F4F6;
+## GUIs, Websites, and Libraries &#x1F4F6;
+Libraries and Websites: 
+*Numpy: used for statistical data manipulation
+*Datetime: to assist with date interaction and manipulation
+*Pandas: used for statistical data manipulation
+*yfinance: utalized to extract data from websitees and online sources via scraping
+*Pandas_makret_calendars: utalized to assist in finding the closest trading dates exempt of holidays and market shutdowns to aid in scraping for pricing data
+*Matplot: used for statistical data manipulation and graphical respresentation
+*urllib.request: utalized to get URL quests to help obtain URL tags for webscraping of live (slight time delay) prices and rf rate
+*beautiful soup: library used for webscraping and webscraping features/ function
+*scripy: to assist with computation and CDF funcvtionality to convert from zscore or other metric to probabiltiy 
+*math: to aid in computation with certain terms, variables or metrics such as 'e' for exponential components of calcuations (Black Sholes, etc)
+*sklearn: to provide scaling assistance with the input data for LSTM
+*keras from tensorflow: to assist with implementation of LSTM ML concepts for forward portfolio forcasting
+Website(s):
+*Yahoo Finance: utalized as a proxy for a conventional platform often found within financial institutions such as bloomberg terminal or Capital IQ
+
 
