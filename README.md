@@ -104,3 +104,13 @@ GUI Description: Tkinter
 * Disadvantages: default look, limited widgets and doesnt support threading
 
 
+## How to Use Model &#x2611;
+
+1. Simply run the program.
+2. A dialogue box will appear, enter your publically traded assets and the exchange they trade on
+3. Click "Go"
+4. Close the dialogue box and let the program run
+5. a tkinter window will pop up - you are capablke of switching pages
+
+
+
