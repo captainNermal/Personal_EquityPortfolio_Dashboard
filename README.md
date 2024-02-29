@@ -38,7 +38,7 @@ Under  the assumption that a respective investor assigns equal weightings to all
 
 Black sholes is a closed form solution (if you have prices in market you can solve for vol). However it is a $non-linear$ equation so a root finding method such as $newton-raphson$ is required to solve for volility denoted as x in $f(x)-0$. Newtons method is iterative such that it uses the derivative of a function to appoximate the root by improving the estimate as the number of simulations go on.
 
-Imagine a simple line chart with x on x axis (vol) and f(x) on y axis with a linear line running through the $x-axis$. Take initial guess $Xn$ (initial vol - usually 0.3 which will be the intersection point between linear line and x axis) then you want to interatively solve for Xn+1 by using equation of linear line $y=mx+b$ to adjust the slope of the linear line to keep improving guess by minimizing or brining $f(x)$ to zero until you converge on the solution.
+Imagine a simple line chart with x on x axis (vol) and f(x) on y axis with a linear line running through the $x-axis$. Take initial guess $Xn$ (initial vol - usually 0.3 which will be the intersection point between linear line and x axis) then you want to interatively solve for Xn+1 (new volitilty) by using equation of linear line $y=mx+b$ to adjust the slope of the linear line to keep improving guess by minimizing or brining $f(x)$ to zero until you converge on the solution.
 
 Slope formula: $\(\frac{{y_2 - y_1}}{{x_2 - x_1}} = m\)$, also known as gradient.
 
@@ -46,8 +46,10 @@ Slope can be translated to: $\(\frac{{0 - f(x)}}{{X_{n+1} - X_n}} = f'(x)\)$
 
 Newton-Raphson method: $\(X_{n+1} = X_n - \frac{{f(X_n)}}{{f'(X_n)}}\)$, iteratively approximates roots.
 
-Application in finance: $\(X_{n+1} = X_n - \frac{{f(X_n) - C_m}}{{\text{vega}}}\)$.
+Application in finance: $\(X_{n+1} = X_n - \frac{{BS(old vol) - C_m}}{{\text{vega}}}\)$.
 
-Objective: Minimize $\(f(x) = \text{BS(old vol)} - C_m\)$ to match market price.
+Objective: Minimize $\(f(x)$ to match market price.
 
 Iterative improvement: Replace old info with new info and minimize $\(f(x)\)$ through break conditions.
+
+
