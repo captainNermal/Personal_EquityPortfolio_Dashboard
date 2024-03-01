@@ -34,7 +34,7 @@ Under  the assumption that a respective investor assigns equal weightings to all
 
 * CAPM (Capital Asset Pricing Model) individual and cummulative returns Annualized: $$\[E(R_{\text{asset}}) = R_f + \beta \times (E(R_{\text{market}}) - R_f)\]$$
 * Forward Projected Sharpe Ratio Annualized
-* Forward implied Volatility for the next day of trading via $Black-Sholes$ call options of underlying equity: $$\[C = S_0 N(d_1) - X e^{-rt} N(d_2)\]$$
+* Forward implied Volatility for the next 6 months via $Black-Sholes$ call options of underlying equity: $$\[C = S_0 N(d_1) - X e^{-rt} N(d_2)\]$$
 
 Black sholes is a closed form solution (if you have prices in market you can solve for vol). However it is a $non-linear$ equation so a root finding method such as $newton-raphson$ is required to solve for volility denoted as x in $f(x)-0$. Newtons method is iterative such that it uses the derivative of a function to appoximate the root by improving the estimate as the number of simulations go on.
 
@@ -51,6 +51,8 @@ Application in finance: $\(X_{n+1} = X_n - \frac{{BS(old vol) - C_m}}{{\text{veg
 Objective: Minimize $f(x)$ to match market price.
 
 Iterative improvement: iteratively replace ${BS(old vol)}$ with new volitilty or $X_{n+1}$
+
+$Note*$ we are solving for 6 month implied volitilty, however we are using the call option contract that expires closest to $today$ and adjusting the tiime factor in the equation for 6 months $T=0.5$. This is done for two reasons. The method in which the data is structure on Yahoo Finance and account of a liquidity arguement. Yahoo Finance allows you to select a drop down menu of expiry dates; however these dates will never quite resemble 6 months (It could be 4.5, 7 or so on). Thus by reducing to a daily increment and adjusting T=0.5 for 6 months promotes simplicity. Looking to the second arguement, maximum liquidity is achieved by the closest option contract to today reflecting the most non-distorted option price. If we look 6 months out, depending on the holding, liquidity can potentially "dry up" leading to a $wider_bid/ask_spread$ and distorting the option price, hence affecting the input to the implied volitilty calculation. By taking the most liquid price and adjusting for 6 months - the most accurate results are rendered. 
 
 <p align="left">
   <b>Advanced: </b>
