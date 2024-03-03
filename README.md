@@ -23,6 +23,8 @@ Under  the assumption that a respective investor assigns equal weightings to all
 * Individual 5 year $Std-Dev$ or $volitility$ for each holding and annualized $Std-Dev$
 * Individual 5 year $Sharpe-ratio$ and Annualized $Sharpe-ratio$ (a metric used to show relative risk to reward) $$\[\text{Sharpe Ratio} = \frac{R_i - R_f}{\sigma_i}\]$$
 * Individual 5 year $Beta$ or $\( \beta \)$ for each holding (A holdings risk relative to the market that possesses a $\( \beta \)=1$)
+  Beta is calculated via slope method:
+  $$\beta = \frac{Cov(R_i, R_m)}{Var(R_m)}$$
 
 * Cummulative weighted performance returns (Log Normal Returns as an adjustment for typically very right skewed financial data as we have high concentrations of small postive returns and a few high positve returns, by taking teh natural log our distribution becomes more symetrical as we condense high returns and expand small returns
 * Chart depiciton of portfolio returns over time
