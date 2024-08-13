@@ -1,4 +1,4 @@
-# Personal_EquityPortfolio_Dashboard_RNN_LSTM
+# Personal_EquityPortfolio_Dashboard
 ##### Joshua Smith 
 ## Project Description and Rationale &#x1F4D3;
 Personal investing at the retail level can be a hefty and costly endevour:
