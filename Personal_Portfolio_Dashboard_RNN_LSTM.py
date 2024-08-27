@@ -185,7 +185,7 @@ class display_GUI:
         fig = Figure(figsize=(6,2), dpi=90)#6
         plot = fig.add_subplot(1, 1, 1)
         plot.plot(train_Predictions, label='Test Predictions')
-        plot.plot(train_Data_y_adjust_1d,                            label='Actual Values')
+        plot.plot(train_Data_y_adjust_1d, label='Actual Values')
         plot.set_title('Historical Backtest on Test Data - Last 835 Days',fontsize=9)
         plot.set_ylabel('Return (%)', fontsize=8)
         plot.set_xlabel('Time duration in Days (D)', fontsize=8)
@@ -203,7 +203,7 @@ class display_GUI:
         fig2 = Figure(figsize=(6,2), dpi=90)
         plot2 = fig2.add_subplot(1, 1, 1)
         plot2.plot(future_predictions)
-        plot2.set_title('Future Portfolio Return Predict. - Next 30 Days',fontsize=9)
+        plot2.set_title('Future Portfolio Return Predict. - Next 5 Days',fontsize=9)
         plot2.set_ylabel('Return (%)', fontsize=8)
         plot2.set_xlabel('Time duration in Days (D)', fontsize=8)
         plot2.tick_params(axis='x', labelsize=6)
@@ -309,17 +309,57 @@ def historical_data_retrieve(user_Input_list, user_Input_list_two):
     #refer to VarModelProject or README file for manual log calculation, here we are subtracting yesterdays price log from todays price log, difference corresponds to todays logorithm
     #ln(x)-ln(y) = ln(x/y) = (Current-Prior)/Prior with natural log smoothing
     historical_Dataframe = (np.log(historical_Dataframe) - np.log(historical_Dataframe.shift(1))) * 100 #*100 to convert to whole percents opposed to decimals
-    historical_Dataframe = historical_Dataframe.dropna()
 
     return historical_Dataframe, user_Input_list, closest_To_today, closest_To_date_fiveyearsago
 
+def historical_data_clean(historical_Dataframe, user_Input_list, closest_To_today, closest_To_date_fiveyearsago):
+    
+    row_count = len(historical_Dataframe)
+    
+    for c in historical_Dataframe.columns:
+        #nans are random - gather metrics
+        nans_count = historical_Dataframe[c].isna().sum()
+        
+        threshold_2 = np.floor(0.02 * row_count)  #threshold - low echelon
+        threshold_10 = np.floor(0.10 * row_count)  #threshold - middle echelon
+        
+        #drop if less than 2%
+        if nans_count <= threshold_2:
+            print('Drop used during transformation')
+            historical_Dataframe.dropna(subset=[c], inplace=True)
+        
+        # linear interpolate if between 2% and 10%
+        elif nans_count <= threshold_10:
+            print('Linear used during transformation')
+            historical_Dataframe[c] = historical_Dataframe[c].interpolate(method='linear')
+        
+        #else use splines
+        else:
+            print('Spline used during transformation')
+            non_nan_data = historical_Dataframe[c].dropna()
+            x = (non_nan_data.index - non_nan_data.index[0]).days  #cnvert index to numerical values
+            y = non_nan_data.values
 
+            #perform spline fitting - use cubic splines
+            spline = spi.splrep(x, y, k=3)  
+
+            #create x values for the entire range
+            x_full = (historical_Dataframe.index - historical_Dataframe.index[0]).days
+
+            #nterpolate missing values
+            y_full = spi.splev(x_full, spline)
+
+            #fill missing values in the original DataFrame
+            historical_Dataframe[c] = y_full
+
+   
+    return historical_Dataframe, user_Input_list, closest_To_today, closest_To_date_fiveyearsago
 
 #rf scraper 
 def rf_Rate_scrape():
     
     #link request
-    url = "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_real_yield_curve&field_tdr_date_value=2023"
+    url = "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_real_yield_curve&field_tdr_date_value=2023" 
     html = urlopen(url)
     soup = BeautifulSoup(html)
 
@@ -756,7 +796,7 @@ def lstm_Predictive_timeseries(historical_Dataframe,user_Input_list):
     The predicted value(s) below are then appended to future_predictions.
     """
     #PREDICT FUTURE POINTS #3F dimensions 5,5,1 as it is univerariate cummulative returns. 
-    num_future_predictions = 30
+    num_future_predictions = 5
     future_predictions = []
     last_five_data_points = test_Data_x[-1:]
 
@@ -772,7 +812,7 @@ def lstm_Predictive_timeseries(historical_Dataframe,user_Input_list):
 
     future_predictions = [x.item() for x in future_predictions]
     
-    #GRAPH mext 30 days 
+    #GRAPH mext 5 days 
     next_30_days = [(dt.year,dt.month,dt.day) for dt in [datetime.datetime.today() + datetime.timedelta(days=i) for i in range(30)]]
     plt.plot(future_predictions)
     #  
@@ -846,6 +886,7 @@ def main():
 
     #wrapping component
     historical_Dataframe, user_Input_list, closest_To_today, closest_To_date_fiveyearsago = historical_data_retrieve(user_Input_list, user_Input_list_two)
+    historical_Dataframe, user_Input_list, closest_To_today, closest_To_date_fiveyearsago = historical_data_clean(historical_Dataframe, user_Input_list, closest_To_today, closest_To_date_fiveyearsago)
     ten_Year_rfrate = rf_Rate_scrape()
     historical_Dataframe, mean_Dict, stddev_Dict, sharpe_Dict, mean_Dict_annual,stddev_Dict_annual = historical_Stats(historical_Dataframe, user_Input_list, ten_Year_rfrate)
     min_Val_cummulative, max_Val_cummulative, mean_Val_cummulative, mean_Val_cummulative_annualized, stddev_Val_cummulative, stddev_Val_cummulative_annualized, sharpe_Ratio_cummulative_annualized = historical_Stats_cummulative(historical_Dataframe, user_Input_list, ten_Year_rfrate)
