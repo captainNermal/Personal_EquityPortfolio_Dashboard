@@ -10,6 +10,15 @@ Personal analytic tools based off publically available information can be incred
 
 Under  the assumption that a respective investor assigns equal weightings to all holdings; this is meant to be a free personal portfolio tool to show up to 5 year historical performance and suggestive forward or implied future performance
 
+## A note on Nans or Empties &#x2753;
+
+Nans are a factor that everyone has to deal with. In this case we shall deal with hthem dynamically. By observing the total length of a dataframe and then the number of rows that contain Nans, one can set up a dynamic interpretation. You must be very careful withj missing data as you have many options: you can drop values, perform mean or linear interprolations among many more methods. Note that one cannot simply drop Nans if they are a large component of the data (you could miss critical values in other columns across the name row); thus, you may have to simply "roll" with Nans in this case. Note that mean or linear interprolations can also present an equally pressing issue if Nans maker up a large component of the data, having the mean or linear interprolation of missing points (porvided they compose a large amount of the data could drastically skew the distribution, accuracy and results. Thus, dynamic interpolations are required:
+
+* If Nans make up less than 2% of the data, the Nans and thier respective rows are $dropped$
+* If Nans are between 2% <= x <= 10% of the data, then the Nans are interprolated via $linear interprolation$
+* If Nans are greater than 10% of the data, we can utalize $spline interprolation$ (overlapping polynomial function curves to interpret missing data). This is logical as splines are capable of adjsuting the the often non-lionear patterns in financial data 
+
+
 ## What Metrics Will You Be provided With &#x2753;
 <p align="left">
   <b>Historical Metrics: </b>
